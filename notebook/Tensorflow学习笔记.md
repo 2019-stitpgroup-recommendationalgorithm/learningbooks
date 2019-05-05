@@ -6,23 +6,50 @@
 
 1. tensor是张量的意思，在tensorflow中作为数据和变量
 2. tensorflow中定义的变量不会直接初始化，需要调用初始化函数并运行才会有值
+3. 张量(tensor)的阶数即为数组的维数，二阶的张量就是平时所说的矩阵
 
 ## tensorflow的大体流程
 
 注：我们将tensorflow起名为tf
 
-1. 定义变量：tf.Variable()
-2. 定义常量：tf.Constant()
-3. 矩阵乘法：tf.matmul()
-4. 矩阵中每个元素平方：tf.square()
-5. 初始化变量：tf.global_variables_initializer()
+### 总体基础
 
-	  1. ps：tf.initialize_all_variables()将不再使用
-6. 计算某一纬度上的平均值：tf.reduce_mean(需要计算的tensor)
-7. 选择梯度下降模型：tf.train.GradientDescentOptimizer(梯度下降步长)
-8. 启动图 (graph)：
-	  1. 定义session上下文：sess = tf.Session()
-	  2. 运行程序并且返回需要输出的值：sess.run(需要输出的值)
+#### 声明和输出
+
+1. 定义变量：*tf.Variable(初始化参数)*
+2. 定义常量：*tf.Constant(初始化参数)*
+3. 初始化变量：
+     1. *变量名.initializer.run()*===>初始化单个变量
+     2. *tf.global_variables_initializer()*====>初始化所有变量
+          1. ps：<del>*tf.initialize_all_variables()*</del>方法已废弃
+4. 计算某一纬度上的平均值：*tf.reduce_mean(需要计算的tensor)*
+5. 选择梯度下降模型：*tf.train.GradientDescentOptimizer(梯度下降步长)*
+6. 启动图 (graph)：
+     1. 定义session上下文：*sess = tf.Session()*
+       2. 运行程序并且返回需要取得的值：*sess.run(需要取的值)*
+       3. *sess.close()*：释放资源
+
+#### 运算
+
+1. 矩阵加法：*tf.add(x,y)*===>得到`x+y`
+2. 矩阵减法：*tf.subtract(x,y)*===>得到`x-y`
+3. 乘法：
+	1. 矩阵乘法：*tf.matmul(a,b)*===>得到`a*b`
+	2. 矩阵中每个元素平方：*tf.square(x)*===>得到`x^2`
+	3. 每个元素对应相乘：*tf.multiply(x,y)*===>得到x每个元素和y每个元素相乘的矩阵
+	4. 标量(常数)和张量(tensor)相乘：*tf.scalar_mul(标量,张量)*
+4. 除法：
+	1. 矩阵除法：<del>*tf.div(x,y)*</del>===>得到`x/y`
+		1. 如果其中一个是浮点数，则结果是浮点型，否则是整型
+		2. Python 2.7语法，不支持*tf.math.divide*，已废弃
+	2. 浮点数除法：*tf.divide(x, y)*===>替代div方法，得到`x/y`
+5. 取余：*tf.mod(x, y, name=None)*===>得到`x%y`
+6. 开根：*tf.sqrt(x)*
+7. 取负：*tf.negative(x)*===>得到`-x`
+8. 向上取整：*tf.ceil(x)*
+9. 向下取整：*tf.floor(x)*
+10. 返回其中的大值：*tf.maximum(x, y)*
+11. 返回其中的小值：*tf.minimum(x, y)*
 
 ## python知识的补充学习
 
