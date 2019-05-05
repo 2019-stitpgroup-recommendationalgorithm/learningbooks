@@ -17,12 +17,12 @@
 4. 矩阵中每个元素平方：tf.square()
 5. 初始化变量：tf.global_variables_initializer()
 
-  1. ps：tf.initialize_all_variables()将不再使用
+	  1. ps：tf.initialize_all_variables()将不再使用
 6. 计算某一纬度上的平均值：tf.reduce_mean(需要计算的tensor)
 7. 选择梯度下降模型：tf.train.GradientDescentOptimizer(梯度下降步长)
 8. 启动图 (graph)：
-  1. 定义session上下文：sess = tf.Session()
-  2. 运行程序并且返回需要输出的值：sess.run(需要输出的值)
+	  1. 定义session上下文：sess = tf.Session()
+	  2. 运行程序并且返回需要输出的值：sess.run(需要输出的值)
 
 ## python知识的补充学习
 
