@@ -14,17 +14,18 @@
 
 ### 总体基础
 
-#### 声明和输出
+#### 声明和输出(流程部分)
 
-1. 定义变量：*tf.Variable(初始化参数)*
-2. 定义常量：*tf.constant(初始化参数)*
+1. 按照所给的数值和形式生成对应形状的tensor***变量***：*tf.Variable(values)* 
+2. 按照所给的数值和形式生成对应形状的tensor***常量***：*tf.constant(初始化参数)*
 3. 初始化变量：
      1. *tf.global_variables_initializer()* ====> 初始化所有变量
-          1. ps：<del>*tf.initialize_all_variables()*</del>方法已废弃
+          1. ps：~~*tf.initialize_all_variables()*~~方法已废弃
      2. *变量名.initializer.run()* ===> 初始化单个变量
           1. 需要使用*tf.InteractiveSession()* 或 with session的.as_default() 方法
 4. 计算某一纬度上的平均值：*tf.reduce_mean(需要计算的tensor)*
-5. 选择梯度下降模型：*tf.train.GradientDescentOptimizer(梯度下降步长)*
+5. 选择梯度下降模型(梯度下降优化器)：*tf.train.GradientDescentOptimizer(梯度下降步长)*
+     1. `.minimize(x)` ：在梯度下降过程中最小化x的值
 6. 启动图 (graph)：
      1. 定义session上下文：*sess = tf.Session()*
        1. *tf.InteractiveSession()*：定义交互式session，可以通过变量调用*run()*方法和*eval()*方法而不需要通过session
@@ -34,24 +35,33 @@
 
 #### 矩阵操作
 
-1. tf.ones(shape,type)：生成单位矩阵
-2. tf.zeros(shape,type)：生成0矩阵
-3. tf.
+##### 生成
+
+1. *tf.Variable(values)* ：按照所给的数值和形式生成对应形状的
+2. *tf.ones(shape,type)*：生成单位矩阵
+3. *tf.zeros(shape,type)*：生成0矩阵
+4. *tf.fill(shape,value)*：根据shape创建一个值全为value的矩阵
+
+###### 高级
+
+1. *tf.random_normal(shape,mean,stddev)* ：生成***正态分布***的随机矩阵，mean为均值，stddev为标准差
+2. *tf.truncated_normal(shape,mean,stddev)* ：生成***截断正态分布***的随机矩阵，值同上
+3. *tf.random_uniform(shape,minval,maxval)* ：生成***均匀分布***的随机矩阵，范围为[minval,maxval]
 
 #### 运算
 
 1. 矩阵加法：*tf.add(x,y)* ===> 得到`x+y`
 2. 矩阵减法：*tf.subtract(x,y)* ===> 得到`x-y`
 3. 乘法：
-	1. 矩阵乘法：*tf.matmul(a,b)* ===> 得到`a*b`
-	2. 矩阵中每个元素平方：*tf.square(x)* ===> 得到`x^2`
-	3. 每个元素对应相乘：*tf.multiply(x,y)* ===> 得到x每个元素和y每个元素相乘的矩阵
-	4. 标量(常数)和张量(tensor)相乘：*tf.scalar_mul(标量,张量)*
+  1. 矩阵乘法：*tf.matmul(a,b)* ===> 得到`a*b`
+  2. 矩阵中每个元素平方：*tf.square(x)* ===> 得到`x^2`
+  3. 每个元素对应相乘：*tf.multiply(x,y)* ===> 得到x每个元素和y每个元素相乘的矩阵
+  4. 标量(常数)和张量(tensor)相乘：*tf.scalar_mul(标量,张量)*
 4. 除法：
-	1. 矩阵除法：<del>*tf.div(x,y)*</del> ===> 得到`x/y`
-		1. 如果其中一个是浮点数，则结果是浮点型，否则是整型
-		2. Python 2.7语法，不支持*tf.math.divide*，已废弃
-	2. 浮点数除法：*tf.divide(x, y)* ===> 替代div方法，得到`x/y`
+  1. 矩阵除法：~~*tf.div(x,y)*~~ ===> 得到`x/y`
+  	1. 如果其中一个是浮点数，则结果是浮点型，否则是整型
+  	2. Python 2.7语法，不支持*tf.math.divide*，已废弃
+  2. 浮点数除法：*tf.divide(x, y)* ===> 替代div方法，得到`x/y`
 5. 取余：*tf.mod(x, y, name=None)* ===> 得到`x%y`
 6. 开根：*tf.sqrt(x)*
 7. 取负：*tf.negative(x)* ===> 得到`-x`
@@ -59,6 +69,35 @@
 9. 向下取整：*tf.floor(x)*
 10. 返回其中的大值：*tf.maximum(x, y)*
 11. 返回其中的小值：*tf.minimum(x, y)*
+
+#### 其他操作
+
+##### 调试层面
+
+1. *tf.shape(tensor)*：返回tensor的形状
+
+##### 合并
+
+1. *tf.pack(values,axis)* ：将values中的张量按照axis轴进行合并，合并成一个新的张量
+	1. values是个数组，每一项为需要合并的张量
+	2. axis为数字，代表需要合并的纬度(轴)
+2. *tf.concat(concat_dim,values)* ：作用同上，只是第1、2个参数互换
+
+##### 判断
+
+1. 判断相等：*tf.equal(x,y)* ===>判断每个元素是否相等，返回bool格式的tensor
+
+##### 转化
+
+1. *tf.cast(x,dtype)* ：将tensor x转化成新数据类型的tensor
+
+##### 求值
+
+1. *tf.gradients* ：求导数
+
+##### 更新
+
+1. *tf.assign(prevalue,nextvalue)* ：更新其中变量的值，将nextvalue赋值给prevalue
 
 ## python知识的补充学习
 
@@ -89,7 +128,7 @@
 
 ### 类
 
-1. *class 类名(父类):*定义一个类，没有父类可不写括号
+1. *class 类名(父类):* 定义一个类，没有父类可不写括号
 2. 类中需要定义一个*def \_\_init\_\_(self,参数):*的初始化函数
 	1. *self* 代表类的实例，即new出来的对象
 	2. *self* 可以不起这个名字，但是第一位就是 *self*
