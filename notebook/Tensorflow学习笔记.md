@@ -76,12 +76,15 @@
 
 1. *tf.shape(tensor)*：返回tensor的形状
 
-##### 合并
+##### 更改和生成
 
 1. *tf.pack(values,axis)* ：将values中的张量按照axis轴进行合并，合并成一个新的张量
-	1. values是个数组，每一项为需要合并的张量
-	2. axis为数字，代表需要合并的纬度(轴)
+  1. values是个数组，每一项为需要合并的张量
+  2. axis为数字，代表需要合并的纬度(轴)
 2. *tf.concat(concat_dim,values)* ：作用同上，只是第1、2个参数互换
+3. *tf.where(条件)* ：返回符合条件的索引下标的tensor
+4. *tf.gather(a,b)* ：从a中取出和b中的索引相同的，并返回tensor
+5. *tf.gather_nd(a,b)* ：同上，可以使用多纬
 
 ##### 判断
 
