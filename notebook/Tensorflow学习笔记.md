@@ -16,19 +16,20 @@
 
 #### 声明和输出(流程部分)
 
-1. 按照所给的数值和形式生成对应形状的tensor***变量***：*tf.Variable(values)* 
-2. 按照所给的数值和形式生成对应形状的tensor***常量***：*tf.constant(初始化参数)*
-3. 占位符：*tf.placeholder(dtype,shape)* ：先占用一个位置，不初始化，调用的时候再赋值
-     1. 调用占位符：运行表达式的时候给 *feed_dict* 参数赋值
-4. 初始化变量：
+1. 声明tensor：
+     1. 按照所给的数值和形式生成对应形状的tensor***变量***：*tf.Variable(values)* 
+     2. 按照所给的数值和形式生成对应形状的tensor***常量***：*tf.constant(初始化参数)*
+     3. 占位符：*tf.placeholder(dtype,shape)* ：先占用一个位置，不初始化，调用的时候再赋值
+          1. 调用占位符：运行表达式的时候给 *feed_dict* 参数赋值
+2. 初始化变量：
      1. *tf.global_variables_initializer()* ====> 初始化所有变量
           1. ps：~~*tf.initialize_all_variables()*~~方法已废弃
      2. *变量名.initializer.run()* ===> 初始化单个变量
           1. 需要使用*tf.InteractiveSession()* 或 with session的.as_default() 方法
-5. 计算某一纬度上的平均值：*tf.reduce_mean(需要计算的tensor)*
-6. 选择梯度下降模型(梯度下降优化器)：*tf.train.GradientDescentOptimizer(梯度下降步长)*
+3. 计算某一纬度上的平均值：*tf.reduce_mean(需要计算的tensor)*
+4. 选择梯度下降模型(梯度下降优化器)：*tf.train.GradientDescentOptimizer(梯度下降步长)*
      1. `.minimize(x)` ：在梯度下降过程中最小化x的值
-7. 启动图 (graph)：
+5. 启动图 (graph)：
      1. 定义session上下文：*sess = tf.Session()*
        1. *tf.InteractiveSession()*：定义交互式session，可以通过变量调用*run()*方法和*eval()*方法而不需要通过session
        2. 运行程序并且返回需要取得的值：*sess.run(需要取的值)*
@@ -55,7 +56,7 @@
 1. 加法：
      1. *tf.add(x,y)* ===> 得到`x+y`
           1. 纬度不一样则每行都会添加
-     2. *tf.reduce_sum(x,axis,keepdims)* ：计算某个纬度上的和，axis代表纬度，keepdims为是否保持原纬度输出
+     2. *tf.reduce_sum(x,axis,keepdims)* ：计算某个纬度上的和，axis代表纬度(不写代表全部求和)，keepdims为是否保持原纬度输出
 2. 减法：*tf.subtract(x,y)* ===> 得到`x-y`
 3. 乘法：
      1. 矩阵乘法：*tf.matmul(a,b)* ===> 得到`a*b`
@@ -85,13 +86,13 @@
 ##### 更改和生成
 
 1. *tf.pack(values,axis)* ：将values中的张量按照axis轴进行合并，合并成一个新的张量
-	  1. values是个数组，每一项为需要合并的张量
-	  2. axis为数字，代表需要合并的纬度(轴)
+     1. values是个数组，每一项为需要合并的张量
+       2. axis为数字，代表需要合并的纬度(轴)
 2. *tf.concat(concat_dim,values)* ：作用同上，只是第1、2个参数互换
 3. *tf.where(条件)* ：返回符合条件的索引下标的tensor
-4. *tf.gather(a,b)* ：从a中取出和b中的索引相同的，并返回tensor
-5. *tf.gather_nd(a,b)* ：同上，可以使用多纬
-6. *tf.nn.embedding_lookup(x,y)* ：从x中取出y下标的部分，返回tensor
+4. *tf.nn.embedding_lookup(x,y)* ：从x中取出y下标的部分，返回tensor，可以`同时处理多个tensor，多个纬度`
+5. *tf.gather(a,b)* ：从a中取出和b中的索引相同的，并返回tensor，***本质同上***，但是一次只能处理一个tensor
+6. *tf.gather_nd(a,b)* ：***同上***，可以使用多纬，一次只能处理一个tensor
 
 ##### 判断
 
