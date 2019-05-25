@@ -27,7 +27,7 @@
      2. *变量名.initializer.run()* ===> 初始化单个变量
           1. 需要使用*tf.InteractiveSession()* 或 with session的.as_default() 方法
 3. 计算某一纬度上的平均值：*tf.reduce_mean(需要计算的tensor)*
-4. 选择梯度下降模型(梯度下降优化器)：*tf.train.GradientDescentOptimizer(梯度下降步长)*
+4. 选择梯度下降模型(梯度下降优化器)：*tf.train.AdamOptimizer(梯度下降步长)*
      1. `.minimize(x)` ：在梯度下降过程中最小化x的值
 5. 启动图 (graph)：
      1. 定义session上下文：*sess = tf.Session()*
@@ -49,6 +49,8 @@
 
 1. *tf.random_normal(shape,mean,stddev)* ：生成***正态分布***的随机矩阵，mean为均值，stddev为标准差
 2. *tf.truncated_normal(shape,mean,stddev)* ：生成***截断正态分布***的随机矩阵，值同上
+	1. 截断标准是两倍stddev，即取值[-2stddev,2stddev]
+	2. 可用来给标准正态分布添加噪音
 3. *tf.random_uniform(shape,minval,maxval)* ：生成***均匀分布***的随机矩阵，范围为[minval,maxval]
 
 #### 运算
@@ -93,6 +95,7 @@
 4. *tf.nn.embedding_lookup(x,y)* ：从x中取出y下标的部分，返回tensor，可以`同时处理多个tensor，多个纬度`
 5. *tf.gather(a,b)* ：从a中取出和b中的索引相同的，并返回tensor，***本质同上***，但是一次只能处理一个tensor
 6. *tf.gather_nd(a,b)* ：***同上***，可以使用多纬，一次只能处理一个tensor
+7. *tf.nn.relu(a)* ：将a中小于0的全部变为0，其余不变，返回一个新的tensor
 
 ##### 判断
 
@@ -110,6 +113,27 @@
 ##### 更新
 
 1. *tf.assign(prevalue,nextvalue)* ：更新其中变量的值，将nextvalue赋值给prevalue
+
+#### 优化器( `tf.train` )
+
+注：更多更详细的请查询 <https://zhuanlan.zhihu.com/p/34169434> 
+
+1. `.AdagradOptimizer` ：随机梯度下降，先快后慢
+2. `.AdamOptimizer` ：稳定步长的梯度下降
+3. 
+
+### 深度学习
+
+#### mlp层
+
+1. *tf.layers.dense(inputs, units, activation)*：将各层进行连接
+	1. input：输入tensor
+	2. units：输出神经节点的节点数
+	3. activation：激活函数
+2. *tf.nn.dropout(x,keep_prob=,rate=)* ：
+	1. keep_prob：
+
+
 
 ## python知识的补充学习
 
@@ -143,7 +167,7 @@
 
 1. *class 类名(父类):* 定义一个类，没有父类可不写括号
 2. 类中需要定义一个*def \_\_init\_\_(self,参数):*的初始化函数
-	1. *self* 代表类的实例，即new出来的对象
+	1. *self* 代表类的实例，即new出来的对象，即其他语言中的this指针
 	2. *self* 可以不起这个名字，但是第一位就是 *self*
 	3. 注： *\_\_init\_\_* 函数不是构造函数，构造函数是 *\_\_new\_\_* 函数，默认继承了object的new
 3. 实例化类使用 *类名(初始化函数参数)* 和调用方法一样
