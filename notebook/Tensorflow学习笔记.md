@@ -45,7 +45,7 @@
 5. *tf.Variable(values)* ：按照所给的数值和形式生成对应形状的tensor变量
 6. *tf.constant(values)* ：按照所给的数值和形式生成对应形状的静态tensor
 
-##### 高级
+##### 高级矩阵
 
 1. *tf.random_normal(shape,mean,stddev)* ：生成***正态分布***的随机矩阵，mean为均值，stddev为标准差
 2. *tf.truncated_normal(shape,mean,stddev)* ：生成***截断正态分布***的随机矩阵，值同上
@@ -130,8 +130,10 @@
 	1. input：输入tensor
 	2. units：输出神经节点的节点数
 	3. activation：激活函数
-2. *tf.nn.dropout(x,keep_prob=,rate=)* ：
-	1. keep_prob：
+2. *tf.nn.dropout(x,keep_prob=,rate=)* ：将数据进行随机的去除并将剩余的放大，以保证矩阵总和不变
+	1. <del>keep_prob</del>：设置数据放大的比例（已废弃，使用rate替代）
+	2. rate：设置数据丢弃的比例（剩余数据放大1/(1-rate)倍）
+3. *tf.keras.layers.Flatten()(input)* ：将input压缩成标准的***二维***矩阵
 
 
 
