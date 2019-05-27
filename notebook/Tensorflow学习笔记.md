@@ -141,25 +141,25 @@
 
 4. *tf.keras.layers.Dense(units,*
 
-  ​									*activation=,*
+  									*activation=,*
 
-  ​									*use_bias=,*
+  									*use_bias=,*
 
-  ​									*kernel_initializer=,*
+  									*kernel_initializer=,*
 
-  ​									*bias_initializer=,*
+  									*bias_initializer=,*
 
-  ​									*kernel_regularizer=,*
+  									*kernel_regularizer=,*
 
-  ​									*bias_regularizer=,*
+  									*bias_regularizer=,*
 
-  ​									*activity_regularizer=,*
+  									*activity_regularizer=,*
 
-  ​									*kernel_constraint=*
+  									*kernel_constraint=*
 
-  ​									*bias_constraint=*
+  									*bias_constraint=*
 
-  ​							*)(input)*  ：全连接层
+  							*)(input)*  ：全连接层
 
   1. 参数：
   	1. units：输出空间维度
@@ -186,18 +186,18 @@
 2. *tf.keras.Model(input,output)* ：定义普通模型，不相邻层之间可能有联系
 
   1. 参数：
-    1. input：输入层
-    2. output：输出层
+        1. input：输入层
+            2. output：输出层
   2. 方法：
   	1. `.compile(optimizer,loss=,metrics=)` ：编译模型
-  		1. optimizer：选择优化器
-  		2. loss：损失函数
-  		3. metrics：评估模型在训练和测试时的性能的指标，一个传[]，为不同层指定不同的指标使用字典/json形式
+        		1. optimizer：选择优化器
+            		2. loss：损失函数
+        		3. metrics：评估模型在训练和测试时的性能的指标，一个传[]，为不同层指定不同的指标使用字典/json形式
   	2. `.fit(input,output,batch_size=,epochs)` ：训练模型
-  		1. input：模型的输入
-  		2. output：模型的输出
-  		3. batch_size：训练切片大小
-  		4. epochs：训练次数
+        		1. input：模型的输入
+            		2. output：模型的输出
+        		3. batch_size：训练切片大小
+          		4. epochs：训练次数
 
 3. *tf.keras.Sequential()* ：定义线性/顺序模型，只有相邻层有关联
 
@@ -205,7 +205,7 @@
 
   1. 方法：
   	1. `.add(dense)` ：向模型中添加层
-  		1. dense：全连接层
+        		1. dense：全连接层
   	2. `.compile(optimizer,loss=,metrics=)` ：编译模型
       1. optimizer：选择优化器
       2. loss：损失函数
@@ -221,7 +221,7 @@
 
 3. for in循环：
 
-  4. for 变量 in range(数字)：进行迭代
+     1. for 变量 in range(数字)：进行迭代
 
 5. 导库：
 	  1. import xxx：直接导入整个库，通过xxx.方法调用
