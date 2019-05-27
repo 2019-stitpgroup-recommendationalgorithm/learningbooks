@@ -135,7 +135,6 @@
 	3. activation：激活函数
 	
 2. *tf.nn.dropout(x,~~keep_prob=~~,rate=)* ：将数据进行随机的去除并将剩余的放大，以保证矩阵总和不变
-	
 	1. ~~keep_prob~~：设置数据放大的比例（已废弃，使用rate替代）
 	
 	2. rate：设置数据丢弃的比例（剩余数据放大1/(1-rate)倍）
@@ -146,21 +145,20 @@
 
 	  1. 参数：
 		   1. units：输出空间维度
-		   2. activation ：激活函数， 若不指定，则不使用
-		   3. use_bias ：是否使用偏置向量
-		   4. kernel_initializer ：kernel矩阵的初始化值
-		   5. kernel_regularizer ：kernel矩阵的正则化项
-		   6. bias_initializer ：偏置向量的初始化值
-		   7. bias_regularizer ：偏置向量的正则化项
-		   8. activity_regularizer ：
-		   9. kernel_constraint ：kernel矩阵的约束项
-		   10. bias_constraint ：偏置向量的约束项
-		   11. input：输入层
+		2. activation ：激活函数， 若不指定，则不使用
+		3. use_bias ：是否使用偏置向量
+		4. kernel_initializer ：kernel矩阵的初始化值
+		5. kernel_regularizer ：kernel矩阵的正则化项
+		6. bias_initializer ：偏置向量的初始化值
+		7. bias_regularizer ：偏置向量的正则化项
+		8. activity_regularizer ：
+		9. kernel_constraint ：kernel矩阵的约束项
+		10. bias_constraint ：偏置向量的约束项
+		11. input：输入层
 	  2. 输出： activation(dot(input, kernel) + bias)
 		   1. activation ：按逐个元素计算的激活函数
 		   2. kernel ：由网络层创建的权值矩阵
 		   3. bias ：其创建的偏置向量 (只在 `use_bias` 为 `True` 时才有用)。
-
 
 ##### *model*
 
