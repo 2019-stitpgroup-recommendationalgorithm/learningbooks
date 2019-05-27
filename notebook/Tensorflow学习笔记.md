@@ -168,36 +168,34 @@
 
 2. *tf.keras.Model(input,output)* ：定义普通模型，不相邻层之间可能有联系
 
-3. 参数：
-   
-    1. input：输入层
-    2. output：输出层
-    
-4. 方法：
+    1. 参数：
+       1. input：输入层
+        2. output：输出层
+       
+    2. 方法：
+        1. `.compile(optimizer,loss=,metrics=)` ：编译模型
+            1. optimizer：选择优化器
+            2. loss：损失函数
 
-5.  `.compile(optimizer,loss=,metrics=)` ：编译模型
-    1. optimizer：选择优化器
-    2. loss：损失函数
+            3. metrics：评估模型在训练和测试时的性能的指标，一个传[]，为不同层指定不同的指标使用字典/json形式
 
-6.   metrics：评估模型在训练和测试时的性能的指标，一个传[]，为不同层指定不同的指标使用字典/json形式
+        2. `.fit(input,output,batch_size=,epochs)` ：训练模型
+            1. input：模型的输入
+            2. output：模型的输出
+            3. batch_size：训练切片大小
+            4. epochs：训练次数
 
-7.  `.fit(input,output,batch_size=,epochs)` ：训练模型
-    1. input：模型的输入
-    2. output：模型的输出
-    3. batch_size：训练切片大小
-	4. epochs：训练次数
+3. *tf.keras.Sequential()* ：定义线性/顺序模型，只有相邻层有关联
 
-6. *tf.keras.Sequential()* ：定义线性/顺序模型，只有相邻层有关联
+      注：sequential模型中不需要写各层的input，即不需要写第二个括号，因为顺序模型中input是上一个加入的层
 
-  注：sequential模型中不需要写各层的input，即不需要写第二个括号，因为顺序模型中input是上一个加入的层
-
-  1. 方法：
-  	1. `.add(dense)` ：向模型中添加层
-        		1. dense：全连接层
-  	2. `.compile(optimizer,loss=,metrics=)` ：编译模型
-      1. optimizer：选择优化器
-      2. loss：损失函数
-      3. metrics：评估模型在训练和测试时的性能的指标，一个传[]，为不同层指定不同的指标使用字典/json形式
+      1. 方法：
+           1. `.add(dense)` ：向模型中添加层
+               1. dense：全连接层
+           2. `.compile(optimizer,loss=,metrics=)` ：编译模型
+              1. optimizer：选择优化器
+              2. loss：损失函数
+              3. metrics：评估模型在训练和测试时的性能的指标，一个传[]，为不同层指定不同的指标使用字典/json形式
 
 ## python知识的补充学习
 
