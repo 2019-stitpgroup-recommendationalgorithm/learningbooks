@@ -157,8 +157,8 @@
 		11. input：输入层
 	  2. 输出： activation(dot(input, kernel) + bias)
 		   1. activation ：按逐个元素计算的激活函数
-		   2. kernel ：由网络层创建的权值矩阵
-		   3. bias ：其创建的偏置向量 (只在 `use_bias` 为 `True` 时才有用)。
+		2. kernel ：由网络层创建的权值矩阵
+		3. bias ：其创建的偏置向量 (只在 `use_bias` 为 `True` 时才有用)。
 
 ##### *model*
 
