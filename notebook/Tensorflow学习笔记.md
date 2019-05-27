@@ -129,54 +129,37 @@
 1. ~~*tf.layers.dense(inputs, units, activation)*~~：全连接层（*tf.layers* 中的方法使用 *tf.keras.layers* 中的代替）
 	
 	1. input：输入tensor
+	
 	2. units：输出神经节点的节点数
+	
 	3. activation：激活函数
 	
 2. *tf.nn.dropout(x,~~keep_prob=~~,rate=)* ：将数据进行随机的去除并将剩余的放大，以保证矩阵总和不变
 	
 	1. ~~keep_prob~~：设置数据放大的比例（已废弃，使用rate替代）
+	
 	2. rate：设置数据丢弃的比例（剩余数据放大1/(1-rate)倍）
 	
 3. *tf.keras.layers.Flatten()(input)* ：将input压缩成标准的***二维***矩阵
 
-4. *tf.keras.layers.Dense(units,*
+4. *tf.keras.layers.Dense(units,activation=,use_bias=,kernel_initializer=,bias_initializer=,kernel_regularizer=,bias_regularizer=,activity_regularizer=,kernel_constraint=bias_constraint=)(input)*  ：全连接层
 
-  									*activation=,*
-
-  									*use_bias=,*
-
-  									*kernel_initializer=,*
-
-  									*bias_initializer=,*
-
-  									*kernel_regularizer=,*
-
-  									*bias_regularizer=,*
-
-  									*activity_regularizer=,*
-
-  									*kernel_constraint=*
-
-  									*bias_constraint=*
-
-  							*)(input)*  ：全连接层
-
-  1. 参数：
-  	1. units：输出空间维度
-  	2. activation ：激活函数， 若不指定，则不使用
-  	3. use_bias ：是否使用偏置向量
-  	4. kernel_initializer ：kernel矩阵的初始化值
-  	5. kernel_regularizer ：kernel矩阵的正则化项
-  	6. bias_initializer ：偏置向量的初始化值
-  	7. bias_regularizer ：偏置向量的正则化项
-  	8. activity_regularizer ：
-  	9. kernel_constraint ：kernel矩阵的约束项
-  	10. bias_constraint ：偏置向量的约束项
-  	11. input：输入层
-  2. 输出： activation(dot(input, kernel) + bias)
-  	1. activation ：按逐个元素计算的激活函数
-  	2. kernel ：由网络层创建的权值矩阵
-  	3.  bias ：其创建的偏置向量 (只在 `use_bias` 为 `True` 时才有用)。
+	  1. 参数：
+		   1. units：输出空间维度
+		   2. activation ：激活函数， 若不指定，则不使用
+		   3. use_bias ：是否使用偏置向量
+		   4. kernel_initializer ：kernel矩阵的初始化值
+		   5. kernel_regularizer ：kernel矩阵的正则化项
+		   6. bias_initializer ：偏置向量的初始化值
+		   7. bias_regularizer ：偏置向量的正则化项
+		   8. activity_regularizer ：
+		   9. kernel_constraint ：kernel矩阵的约束项
+		   10. bias_constraint ：偏置向量的约束项
+		   11. input：输入层
+	  2. 输出： activation(dot(input, kernel) + bias)
+		   1. activation ：按逐个元素计算的激活函数
+		   2. kernel ：由网络层创建的权值矩阵
+		   3. bias ：其创建的偏置向量 (只在 `use_bias` 为 `True` 时才有用)。
 
 
 ##### *model*
@@ -185,21 +168,26 @@
 
 2. *tf.keras.Model(input,output)* ：定义普通模型，不相邻层之间可能有联系
 
-  1. 参数：
-        1. input：输入层
-            2. output：输出层
-  2. 方法：
-  	1. `.compile(optimizer,loss=,metrics=)` ：编译模型
-        		1. optimizer：选择优化器
-            		2. loss：损失函数
-        		3. metrics：评估模型在训练和测试时的性能的指标，一个传[]，为不同层指定不同的指标使用字典/json形式
-  	2. `.fit(input,output,batch_size=,epochs)` ：训练模型
-        		1. input：模型的输入
-            		2. output：模型的输出
-        		3. batch_size：训练切片大小
-          		4. epochs：训练次数
+3. 参数：
+   
+    1. input：输入层
+    2. output：输出层
+    
+4. 方法：
 
-3. *tf.keras.Sequential()* ：定义线性/顺序模型，只有相邻层有关联
+5.  `.compile(optimizer,loss=,metrics=)` ：编译模型
+    1. optimizer：选择优化器
+    2. loss：损失函数
+
+6.   metrics：评估模型在训练和测试时的性能的指标，一个传[]，为不同层指定不同的指标使用字典/json形式
+
+7.  `.fit(input,output,batch_size=,epochs)` ：训练模型
+    1. input：模型的输入
+    2. output：模型的输出
+    3. batch_size：训练切片大小
+	4. epochs：训练次数
+
+6. *tf.keras.Sequential()* ：定义线性/顺序模型，只有相邻层有关联
 
   注：sequential模型中不需要写各层的input，即不需要写第二个括号，因为顺序模型中input是上一个加入的层
 
