@@ -89,7 +89,7 @@
 
 1. *tf.pack(values,axis)* ：将values中的张量按照axis轴进行合并，合并成一个新的张量
      1. values是个数组，每一项为需要合并的张量
-       2. axis为数字，代表需要合并的纬度(轴)
+     2. axis为数字，代表需要合并的纬度(轴)
 2. *tf.concat(concat_dim,values)* ：作用同上，只是第1、2个参数互换
 3. *tf.where(条件)* ：返回符合条件的索引下标的tensor
 4. *tf.nn.embedding_lookup(x,y)* ：从x中取出y下标的部分，返回tensor，可以`同时处理多个tensor，多个纬度`
