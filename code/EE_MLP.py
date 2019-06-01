@@ -5,91 +5,112 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
 data=pd.read_csv(
-                    '../TrainDate/ml-100k/u.data',             #ÉèÖÃÎÄ¼şÂ·¾¶
-                    sep="\t",                                   #ÉèÖÃ¶ÁÈ¡ÎÄ¼şÊ±ÒÔ¿Õ¸ñ·Ö¸ôÃ¿ÁĞ
-                    names=["uid","pid","rate","time"]           #ÉèÖÃÃ¿ÁĞµÄ±êÌâ
+                    'u.data',             #è®¾ç½®æ–‡ä»¶è·¯å¾„
+                    sep="\t",                                   #è®¾ç½®è¯»å–æ–‡ä»¶æ—¶ä»¥ç©ºæ ¼åˆ†éš”æ¯åˆ—
+                    names=["uid","pid","rate","time"]           #è®¾ç½®æ¯åˆ—çš„æ ‡é¢˜
                  )
-K=10                                                             #ÌØÕ÷Êı
-beta=0.1                                                       #ÕıÔò»¯ÏîÏµÊı
-alpha=1e-3                                                     #Ìİ¶ÈÏÂ½µ²½³¤
-steps=100                                                      #Ìİ¶ÈÏÂ½µ×Ü´ÎÊı
-flag=0.001                                                      #ÉèÖÃÊÕÁ²ËÙÂÊĞ¡ÓÚÍË³ö
-batch=1024                                                       #ÉèÖÃÇĞÆ¬´óĞ¡
-test_size=0.2                                                   #²âÊÔ¼¯±ÈÀı
+K=10                                                             #ç‰¹å¾æ•°
+beta=0.1                                                       #æ­£åˆ™åŒ–é¡¹ç³»æ•°
+alpha=1e-3                                                     #æ¢¯åº¦ä¸‹é™æ­¥é•¿
+steps=100                                                      #æ¢¯åº¦ä¸‹é™æ€»æ¬¡æ•°
+flag=0.001                                                      #è®¾ç½®æ”¶æ•›é€Ÿç‡å°äºé€€å‡º
+batch=256                                                 #è®¾ç½®åˆ‡ç‰‡å¤§å°
+test_size=0.2                                                   #æµ‹è¯•é›†æ¯”ä¾‹
 
-usernum=data.uid.unique().shape[0]                              #µÃµ½ÓÃ»§µÄÊıÄ¿
-itemnum=data.pid.unique().shape[0]                              #µÃµ½ÎïÆ·µÄÊıÄ¿
+usernum=data.uid.unique().shape[0]                              #å¾—åˆ°ç”¨æˆ·çš„æ•°ç›®
+itemnum=data.pid.unique().shape[0]                              #å¾—åˆ°ç‰©å“çš„æ•°ç›®
 
-train,test=train_test_split(data,test_size=test_size)                #µÃµ½ÑµÁ·¼¯ºÍ²âÊÔ¼¯,8/2·Ö
-testnum=test.shape[0]                                             #²âÊÔ¼¯×ÜÊı
-trainnum=train.shape[0]                                           #µÃµ½ÑµÁ·¼¯×ÜÊı
+train,test=train_test_split(data,test_size=test_size)                #å¾—åˆ°è®­ç»ƒé›†å’Œæµ‹è¯•é›†,8/2åˆ†
+testnum=test.shape[0]                                             #æµ‹è¯•é›†æ€»æ•°
+trainnum=train.shape[0]                                           #å¾—åˆ°è®­ç»ƒé›†æ€»æ•°
 
-average=np.mean(data.rate.values)                              #µÃµ½ÆÀ·ÖµÄÆ½¾ùÖµ
-uid=tf.placeholder(dtype=tf.int32,shape=[None],name="uid")      #ÓÃ»§¾ØÕóÇĞÆ¬
-pid=tf.placeholder(dtype=tf.int32,shape=[None],name="pid")      #ÎïÆ·¾ØÕóÇĞÆ¬
-rate=tf.placeholder(dtype=tf.float32,shape=[None],name="rate")  #ÕæÊµÆÀ·Ö¾ØÕóÇĞÆ¬
+average=np.mean(data.rate.values)                              #å¾—åˆ°è¯„åˆ†çš„å¹³å‡å€¼
+uid=tf.placeholder(dtype=tf.int32,shape=[None],name="uid")      #ç”¨æˆ·çŸ©é˜µåˆ‡ç‰‡
+pid=tf.placeholder(dtype=tf.int32,shape=[None],name="pid")      #ç‰©å“çŸ©é˜µåˆ‡ç‰‡
+rate=tf.placeholder(dtype=tf.float32,shape=[None],name="rate")  #çœŸå®è¯„åˆ†çŸ©é˜µåˆ‡ç‰‡
 
-bu=tf.Variable(tf.random_normal([usernum], stddev=0.01))        #¶¨ÒåÓÃ»§Æ«²î
-bi=tf.Variable(tf.random_normal([itemnum], stddev=0.01))        #¶¨ÒåÎïÆ·Æ«²î
-Y=tf.Variable(tf.random_normal([itemnum,K],stddev=0.01))        #¶¨ÒåÎïÆ·ÏòÁ¿
-X=tf.Variable(tf.random_normal([usernum,K],stddev=0.01))        #¶¨ÒåÓÃ»§ÏòÁ¿
+bu=tf.Variable(tf.random_normal([usernum], stddev=0.01))        #å®šä¹‰ç”¨æˆ·åå·®
+bi=tf.Variable(tf.random_normal([itemnum], stddev=0.01))        #å®šä¹‰ç‰©å“åå·®
+Y=tf.Variable(tf.random_normal([itemnum,K],stddev=0.01))        #å®šä¹‰ç‰©å“å‘é‡
+X=tf.Variable(tf.random_normal([usernum,K],stddev=0.01))        #å®šä¹‰ç”¨æˆ·å‘é‡
 
-b_u=tf.nn.embedding_lookup(bu,uid)                      #ÓÃ»§Æ«²î¾ØÕó
-b_i=tf.nn.embedding_lookup(bi,pid)                      #ÎïÆ·Æ«²î¾ØÕó
-Xu=tf.nn.embedding_lookup(X,uid)                   #µÃµ½ÓÃ»§ÌØÕ÷ĞĞ
-Yi=tf.nn.embedding_lookup(Y,pid)                   #µÃµ½ÎïÆ·ÌØÕ÷ĞĞ
+b_u=tf.nn.embedding_lookup(bu,uid)                      #ç”¨æˆ·åå·®çŸ©é˜µ
+b_i=tf.nn.embedding_lookup(bi,pid)                      #ç‰©å“åå·®çŸ©é˜µ
+Xu=tf.nn.embedding_lookup(X,uid)                   #å¾—åˆ°ç”¨æˆ·ç‰¹å¾è¡Œ
+Yi=tf.nn.embedding_lookup(Y,pid)                   #å¾—åˆ°ç‰©å“ç‰¹å¾è¡Œ
+
+#-----------------------------------------------------------------------------------
+
 
 user_id = tf.placeholder(dtype=tf.int32, shape=[None], name='user_id')
 item_id = tf.placeholder(dtype=tf.int32, shape=[None], name='item_id')
-y = tf.placeholder(dtype=tf.float32, shape=[None], name='y')
 
 mlp_P = tf.Variable(tf.random_normal([usernum, K]), dtype=tf.float32)
 mlp_Q = tf.Variable(tf.random_normal([itemnum, K]), dtype=tf.float32)
-
+# print(user_id.shape , item_id.shape)
 mlp_user_latent_factor = tf.nn.embedding_lookup(mlp_P, user_id)
+
 mlp_item_latent_factor = tf.nn.embedding_lookup(mlp_Q, item_id)
 
+# Gyx = tf.concat([mlp_item_latent_factor, mlp_user_latent_factor], axis=1)
+# print(tf.concat([mlp_item_latent_factor, mlp_user_latent_factor], axis=1))
+test1 = tf.concat([mlp_item_latent_factor, mlp_user_latent_factor], axis=1)
 layer_1 = tf.layers.dense(inputs=tf.concat([mlp_item_latent_factor, mlp_user_latent_factor], axis=1),
-                          units=num_factor_mlp * 2, kernel_initializer=tf.random_normal_initializer,
+                          units= K * 2, kernel_initializer=tf.random_normal_initializer,
                           activation=tf.nn.relu,
-                          kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=reg_rate))
+                          kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=beta))
 
-layer_2 = tf.layers.dense(inputs=layer_1, units=hidden_dimension * 2, activation=tf.nn.relu,
+layer_2 = tf.layers.dense(inputs=layer_1, units=K * 2, activation=tf.nn.relu,
                           kernel_initializer=tf.random_normal_initializer,
-                          kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=reg_rate))
+                          kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=beta))
 
-MLP = tf.layers.dense(inputs=layer_2, units=hidden_dimension, activation=tf.nn.relu,
+MLP = tf.layers.dense(inputs=layer_2, units=K, activation=tf.nn.relu,
                       kernel_initializer=tf.random_normal_initializer,
-                      kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=reg_rate))
+                      kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=beta))
 
 pred_y = tf.nn.sigmoid(tf.reduce_sum(MLP, axis=1))
 
+# pred_y = tf.layers.dense(inputs=MLP, units=1, activation=tf.sigmoid)
+# pred_y = tf.reduce_sum(pred_y,axis=1)
+#-----------------------------------------------------------------------------------
 cost=rate - average - b_u - b_i + pred_y
 
-normalpath=tf.square(cost)                                        #µÃµ½·ÇÕıÔò»¯Ïî²¿·Ö
-regpath=beta * (tf.nn.l2_loss(Xu - Yi) + tf.nn.l2_loss(b_u) + tf.nn.l2_loss(b_i))            #µÃµ½ÕıÔò»¯Ïî²¿·Ö
-loss=tf.reduce_sum(normalpath) +regpath                                      #µÃµ½ËğÊ§º¯Êı
-trainer=tf.train.AdamOptimizer(learning_rate=alpha).minimize(loss)          #ÓÅ»¯Æ÷
+normalpath=tf.square(cost)                                        #å¾—åˆ°éæ­£åˆ™åŒ–é¡¹éƒ¨åˆ†
+regpath=beta * (tf.nn.l2_loss(Xu - Yi) + tf.nn.l2_loss(b_u) + tf.nn.l2_loss(b_i))            #å¾—åˆ°æ­£åˆ™åŒ–é¡¹éƒ¨åˆ†
+loss=tf.reduce_sum(normalpath) +regpath                                      #å¾—åˆ°æŸå¤±å‡½æ•°
+trainer=tf.train.AdamOptimizer(learning_rate=alpha).minimize(loss)          #ä¼˜åŒ–å™¨
 sess=tf.InteractiveSession()
 tf.global_variables_initializer().run()
-losses=[]                                                       #Ã¿´Î¸üĞÂµÄËğÊ§º¯ÊıÁĞ±í
+losses=[]                                                       #æ¯æ¬¡æ›´æ–°çš„æŸå¤±å‡½æ•°åˆ—è¡¨
 rmselist=[]
 maelist=[]
+user_random = np.random.random_integers(usernum - 1,size =trainnum)
+item_random = np.random.random_integers(itemnum - 1,size = trainnum)
+# print(user_random , len(item_random))
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     for step in range(steps):
-        train_loss_list=[]                                            #´¢´æ¸÷ÇĞÆ¬µÄËğÊ§º¯Êı
         for i in range(int(trainnum/batch)):
-            _,lossbuffer=sess.run([trainer,loss],feed_dict={
+            train_loss_list = []  # å‚¨å­˜å„åˆ‡ç‰‡çš„æŸå¤±å‡½æ•°
+            # batch_user = user_random[i * batch:(i + 1) * batch]
+            # print(len(batch_user),len(batch_item))
+            _,lossbuffer,tmp , tmp2 , tmp3=sess.run([trainer,loss,test1,user_id,item_id],feed_dict={
+                                                        user_id : user_random[i * batch:(i + 1) * batch],
+                                                        item_id : item_random[i * batch:(i + 1) * batch],
                                                         uid:train.uid.values[i*batch:(i+1)*batch]-1,
                                                         pid:train.pid.values[i*batch:(i+1)*batch]-1,
                                                         rate:train.rate.values[i*batch:(i+1)*batch]
                                                     })
+            # print(lossbuffer)
+            # print(tmp.shape , tmp3.shape)
+            # print(tmp.shape)
             train_loss_list.append(lossbuffer)
         rmse=[]
         mae=[]
         for i in  range(int(testnum/batch)):
            lossbuffer=sess.run(cost,feed_dict={
+                                                user_id: user_random[i * batch:(i + 1) * batch],
+                                                item_id: item_random[i * batch:(i + 1) * batch],
                                                 uid:test.uid.values[i*batch:(i+1)*batch]-1,
                                                 pid:test.pid.values[i*batch:(i+1)*batch]-1,
                                                 rate:test.rate.values[i*batch:(i+1)*batch]
