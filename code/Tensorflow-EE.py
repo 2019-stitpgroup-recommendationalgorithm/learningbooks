@@ -14,7 +14,7 @@ beta=0.1                                                       #正则化项系�
 alpha=1e-3                                                     #梯度下降步长
 steps=1000                                                       #梯度下降总次数
 flag=0.001                                                      #设置收敛速率小于退出
-batch=1024                                                       #设置切片大小
+batch=5120                                                       #设置切片大小
 test_size=0.2                                                   #测试集比例
 
 usernum=data.uid.unique().shape[0]                              #得到用户的数目
@@ -53,7 +53,7 @@ with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     for step in range(steps):
         train_loss_list=[]                                            #储存各切片的损失函数
-        for i in range(int(trainnum/batch)):
+        for i in range(int(trainnum/batch)+1):
             _,lossbuffer=sess.run([trainer,loss],feed_dict={
                                                         uid:train.uid.values[i*batch:(i+1)*batch]-1,
                                                         pid:train.pid.values[i*batch:(i+1)*batch]-1,
@@ -62,7 +62,7 @@ with tf.Session() as sess:
             train_loss_list.append(lossbuffer)
         rmse=[]
         mae=[]
-        for i in  range(int(testnum/batch)):
+        for i in  range(int(testnum/batch)+1):
            lossbuffer=sess.run(cost,feed_dict={
                                                 uid:test.uid.values[i*batch:(i+1)*batch]-1,
                                                 pid:test.pid.values[i*batch:(i+1)*batch]-1,
@@ -70,6 +70,8 @@ with tf.Session() as sess:
                                             })
            rmse.append(np.square(lossbuffer))
            mae.append(np.abs(lossbuffer))
+        rmse=np.hstack(rmse).tolist()
+        mae=np.hstack(mae).tolist()
         rmse=np.sqrt(np.sum(rmse)/testnum)
         mae=np.sum(mae)/testnum
         if step%20==0:
