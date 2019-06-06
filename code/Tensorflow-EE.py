@@ -7,19 +7,20 @@ import matplotlib.pyplot as plt
 data=pd.read_csv(
                     '../TrainDate/ml-100k/u.data',             #设置文件路径
                     sep="\t",                                   #设置读取文件时以空格分隔每列
-                    names=["uid","pid","rate","time"]           #设置每列的标题
+                    names=["uid","pid","rate","time"],           #设置每列的标题
+                    engine="python"
                  )
 K=10                                                             #特征数
 beta=0.1                                                       #正则化项系数
 alpha=1e-3                                                     #梯度下降步长
 steps=1000                                                       #梯度下降总次数
 flag=0.001                                                      #设置收敛速率小于退出
-batch=5120                                                       #设置切片大小
+batch=1024                                                       #设置切片大小
 test_size=0.2                                                   #测试集比例
 
-usernum=data.uid.unique().shape[0]                              #得到用户的数目
-itemnum=data.pid.unique().shape[0]                              #得到物品的数目
-
+usernum=data.uid.unique().max()                              #得到用户的数目
+itemnum=data.pid.unique().max()                              #得到物品的数目
+print(usernum,itemnum)
 train,test=train_test_split(data,test_size=test_size)                #得到训练集和测试集,8/2分
 testnum=test.shape[0]                                             #测试集总数
 trainnum=train.shape[0]                                           #得到训练集总数
