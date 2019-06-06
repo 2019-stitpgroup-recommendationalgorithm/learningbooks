@@ -17,8 +17,8 @@ flag=0.001                                                      #设置收敛速
 batch=5120                                                 #设置切片大小
 test_size=0.2                                                   #测试集比例
 
-usernum=data.uid.unique().shape[0]                              #得到用户的数目
-itemnum=data.pid.unique().shape[0]                              #得到物品的数目
+usernum=data.uid.unique().max()                              #得到用户的数目
+itemnum=data.pid.unique().max()                              #得到物品的数目
 
 train,test=train_test_split(data,test_size=test_size)                #得到训练集和测试集,8/2分
 testnum=test.shape[0]                                             #测试集总数
