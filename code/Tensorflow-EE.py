@@ -10,22 +10,22 @@ data=pd.read_csv(
                     names=["uid","pid","rate","time"],           #设置每列的标题
                     engine="python"
                  )
-K=10                                                             #特征数
+K=32                                                             #特征数
 beta=0.1                                                       #正则化项系数
-alpha=1e-3                                                     #梯度下降步长
+alpha=1e-4                                                     #梯度下降步长
 steps=1000                                                       #梯度下降总次数
 flag=0.001                                                      #设置收敛速率小于退出
 batch=1024                                                       #设置切片大小
 test_size=0.2                                                   #测试集比例
 
-usernum=data.uid.unique().max()                              #得到用户的数目
-itemnum=data.pid.unique().max()                              #得到物品的数目
-print(usernum,itemnum)
+usernum=data.uid.unique().shape[0]                              #得到用户的数目
+itemnum=data.pid.unique().shape[0]                              #得到物品的数目
+
 train,test=train_test_split(data,test_size=test_size)                #得到训练集和测试集,8/2分
 testnum=test.shape[0]                                             #测试集总数
 trainnum=train.shape[0]                                           #得到训练集总数
 
-average=np.mean(data.rate.values)                              #得到评分的平均值
+average=np.mean(train.rate.values)                              #得到评分的平均值
 uid=tf.placeholder(dtype=tf.int32,shape=[None],name="uid")      #用户矩阵切片
 pid=tf.placeholder(dtype=tf.int32,shape=[None],name="pid")      #物品矩阵切片
 rate=tf.placeholder(dtype=tf.float32,shape=[None],name="rate")  #真实评分矩阵切片
@@ -45,8 +45,6 @@ normalpath=tf.square(cost)                                        #得到非正�
 regpath=beta * (tf.nn.l2_loss(Xu - Yi) + tf.nn.l2_loss(b_u) + tf.nn.l2_loss(b_i))            #得到正则化项部分
 loss=tf.reduce_sum(normalpath) +regpath                                      #得到损失函数
 trainer=tf.train.AdamOptimizer(learning_rate=alpha).minimize(loss)          #优化器
-sess=tf.InteractiveSession()
-tf.global_variables_initializer().run()
 losses=[]                                                       #每次更新的损失函数列表
 rmselist=[]
 maelist=[]
@@ -54,6 +52,8 @@ with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     for step in range(steps):
         train_loss_list=[]                                            #储存各切片的损失函数
+        train=train.sample(frac=1)                                             #打乱顺序
+        test=test.sample(frac=1)
         for i in range(int(trainnum/batch)+1):
             _,lossbuffer=sess.run([trainer,loss],feed_dict={
                                                         uid:train.uid.values[i*batch:(i+1)*batch]-1,
