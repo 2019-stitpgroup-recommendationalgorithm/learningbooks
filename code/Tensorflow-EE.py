@@ -53,7 +53,6 @@ with tf.Session() as sess:
     for step in range(steps):
         train_loss_list=[]                                            #储存各切片的损失函数
         train=train.sample(frac=1)                                             #打乱顺序
-        test=test.sample(frac=1)
         for i in range(int(trainnum/batch)+1):
             _,lossbuffer=sess.run([trainer,loss],feed_dict={
                                                         uid:train.uid.values[i*batch:(i+1)*batch]-1,
