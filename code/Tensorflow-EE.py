@@ -15,11 +15,20 @@ beta=0.1                                                       #正则化项系�
 alpha=1e-4                                                     #梯度下降步长
 steps=1000                                                       #梯度下降总次数
 flag=0.001                                                      #设置收敛速率小于退出
-batch=1024                                                       #设置切片大小
+batch=5120                                                       #设置切片大小
 test_size=0.2                                                   #测试集比例
+
+users=data.uid.unique()                                         #所有不同的用户
+items=data.pid.unique()                                         #所有不同的物品
+instead_userdict=dict(zip(users,range(1,len(users))))           #用户替换字典
+instead_itemdict=dict(zip(items,range(1,len(items))))           #物品替换字典
+
+data.uid.replace(instead_userdict,inplace=True)                 #生成新用户训练集
+data.pid.replace(instead_itemdict,inplace=True)                 #生成新物品训练集
 
 usernum=data.uid.unique().shape[0]                              #得到用户的数目
 itemnum=data.pid.unique().shape[0]                              #得到物品的数目
+
 
 train,test=train_test_split(data,test_size=test_size)                #得到训练集和测试集,8/2分
 testnum=test.shape[0]                                             #测试集总数
@@ -70,7 +79,7 @@ with tf.Session() as sess:
                                             })
            rmse.append(np.square(lossbuffer))
            mae.append(np.abs(lossbuffer))
-        rmse=np.hstack(rmse).tolist()
+        rmse=np.hstack(rmse).tolist()           #处理最后一次切片无法整除的问题
         mae=np.hstack(mae).tolist()
         rmse=np.sqrt(np.sum(rmse)/testnum)
         mae=np.sum(mae)/testnum
