@@ -23,8 +23,23 @@ items=data.pid.unique()                                         #所有不同的
 instead_userdict=dict(zip(users,range(1,len(users))))           #用户替换字典
 instead_itemdict=dict(zip(items,range(1,len(items))))           #物品替换字典
 
-data.uid.replace(instead_userdict,inplace=True)                 #生成新用户训练集
-data.pid.replace(instead_itemdict,inplace=True)                 #生成新物品训练集
+#100k、1m数据可用
+# data.uid.replace(instead_userdict,inplace=True)                 #生成新用户训练集
+# data.pid.replace(instead_itemdict,inplace=True)                 #生成新物品训练集
+
+#10m数据使用，降低内存的需求
+userlist=[]
+itemlist=[]
+for i in range(len(data.uid)):
+    userlist.append(instead_userdict.get(data.uid[i]))
+for i in range(len(data.pid)):
+    itemlist.append(instead_itemdict.get(data.pid[i]))
+data=pd.DataFrame({
+    "uid":userlist,
+    "pid":itemlist,
+    "rate":data.rate
+})
+
 
 usernum=data.uid.unique().shape[0]                              #得到用户的数目
 itemnum=data.pid.unique().shape[0]                              #得到物品的数目
