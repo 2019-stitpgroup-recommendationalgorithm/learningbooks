@@ -30,10 +30,10 @@ instead_itemdict=dict(zip(items,range(1,len(items))))           #物品替换字
 #10m数据使用，降低内存的需求
 userlist=[]
 itemlist=[]
-for i in range(len(data.uid)):
-    userlist.append(instead_userdict.get(data.uid[i]))
-for i in range(len(data.pid)):
-    itemlist.append(instead_itemdict.get(data.pid[i]))
+for i in data.uid:
+    userlist.append(instead_userdict.get(i))
+for i in data.pid:
+    itemlist.append(instead_itemdict.get(i))
 data=pd.DataFrame({
     "uid":userlist,
     "pid":itemlist,
